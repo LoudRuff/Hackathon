@@ -1,4 +1,3 @@
-
 <html class="dark">
 
 <head>
@@ -14,355 +13,334 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <!-- TensorFlow.js Library -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-<!-- COCO-SSD Model (Detects 80+ objects) -->
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+  <!-- COCO-SSD Model (Detects 80+ objects) -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
 
 
-  <style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
 
-    .scanline-overlay {
-      background: linear-gradient(rgba(0, 255, 65, 0.03) 50%, rgba(0, 0, 0, 0) 50%);
-      background-size: 100% 4px;
-      pointer-events: none;
-    }
+  .scanline-overlay {
+    display: none;
+  }
 
-    .night-vision-filter {
-      filter: sepia(100%) hue-rotate(90deg) brightness(0.8) contrast(1.2);
-    }
+  .night-vision-filter {
+    filter: none;
+  }
 
-    .pulse-glow {
-      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
+  .pulse-glow {
+    animation: none;
+  }
+</style>
 
-    @keyframes pulse {
-
-      0%,
-      100% {
-        opacity: 1;
-        text-shadow: 0 0 20px #00FF41;
-      }
-
-      50% {
-        opacity: 0.4;
-        text-shadow: 0 0 5px #00FF41;
-      }
-    }
-  </style>
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          "colors": {
-            "inverse-surface": "#72ff70",
-            "on-primary-container": "#007117",
-            "outline-variant": "#3b4b37",
-            "surface-tint": "#00e639",
-            "secondary-fixed-dim": "#c6c6c6",
-            "on-secondary-fixed": "#1b1b1b",
-            "surface-container-low": "#002203",
-            "surface": "#001802",
-            "on-secondary": "#303030",
-            "surface-container-high": "#003205",
-            "on-tertiary-container": "#626060",
-            "primary-fixed-dim": "#00e639",
-            "secondary": "#c6c6c6",
-            "tertiary": "#fcf8f8",
-            "surface-dim": "#001802",
-            "on-secondary-fixed-variant": "#474747",
-            "primary-fixed": "#72ff70",
-            "on-error": "#690005",
-            "on-tertiary": "#313030",
-            "inverse-primary": "#006e16",
-            "inverse-on-surface": "#003907",
-            "on-surface": "#72ff70",
-            "surface-variant": "#003e08",
-            "tertiary-fixed-dim": "#c9c6c5",
-            "on-surface-variant": "#b9ccb2",
-            "error-container": "#93000a",
-            "on-error-container": "#ffdad6",
-            "on-secondary-container": "#b5b5b5",
-            "outline": "#84967e",
-            "tertiary-container": "#dfdcdb",
-            "primary": "#ebffe2",
-            "surface-container-highest": "#003e08",
-            "surface-bright": "#004409",
-            "on-primary": "#003907",
-            "surface-container": "#002603",
-            "primary-container": "#00ff41",
-            "on-tertiary-fixed": "#1c1b1b",
-            "on-primary-fixed": "#002203",
-            "background": "#001802",
-            "surface-container-lowest": "#001201",
-            "tertiary-fixed": "#e5e2e1",
-            "secondary-container": "#474747",
-            "on-primary-fixed-variant": "#00530e",
-            "error": "#ffb4ab",
-            "on-tertiary-fixed-variant": "#474646",
-            "on-background": "#72ff70",
-            "secondary-fixed": "#e2e2e2"
-          },
-          "spacing": {
-            "unit": "8px",
-            "stack-gap": "16px",
-            "margin-page": "32px",
-            "gutter": "24px",
-            "touch-target-min": "80px"
-          },
-          "fontFamily": {
-            "label-lg": ["Space Grotesk"],
-            "headline-md": ["Space Grotesk"],
-            "body-lg": ["Space Grotesk"],
-            "label-sm": ["Space Grotesk"],
-            "headline-lg": ["Space Grotesk"],
-            "body-md": ["Space Grotesk"]
-          }
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          primary: "#2563EB",
+          background: "#F8FAFC",
+          surface: "#FFFFFF",
+          text: "#0F172A",
+          subtext: "#64748B",
+          border: "#E2E8F0",
+          success: "#22C55E"
         }
       }
     }
-  </script>
-  <style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-</head>
+  }
+</script>
 
-<body class="bg-black overflow-hidden select-none">
- 
+<style>
+  body {
+    min-height: max(884px, 100dvh);
+  }
+</style>
+
+<body class="bg-[#F8FAFC] overflow-hidden select-none">
+
+  <!-- HEADER -->
   <header
-    class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-8 py-6 bg-black border-b-[5px] border-[#00FF41] shadow-[0px_0px_20px_#00FF41]">
-    <div class="flex items-center gap-4">
-      <span class="material-symbols-outlined text-[#00FF41] text-2xl" data-icon="terminal">terminal</span>
-      <h1 class="font-['Space_Grotesk'] font-bold tracking-tighter uppercase text-xl text-[#00FF41]">
-        VISION_TERMINAL_v1.0</h1>
+    class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white border-b border-gray-200">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined text-[#2563EB] text-2xl">visibility</span>
+      <h1 class="font-semibold text-[#0F172A] text-lg">
+        Vision Assistant
+      </h1>
     </div>
-    <div class="flex items-center gap-6">
-      <div class="text-[#00FF41] font-['Space_Grotesk'] font-bold tracking-widest text-sm opacity-80">
-        LIVE FEED: ACTIVE
-      </div>
-      <div class="w-4 h-4 bg-[#00FF41] rounded-full animate-pulse"></div>
+
+    <div class="flex items-center gap-2">
+      <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+      <span class="text-green-600 text-sm font-medium">
+        Active
+      </span>
     </div>
   </header>
-  
-  <main class="relative h-screen w-screen flex flex-col items-center justify-center p-8 overflow-hidden" id="hello">
-    
-    <div class="absolute inset-0 z-0">
-      <img class="w-full h-full object-cover night-vision-filter"
-        data-alt="Gritty urban street view through a low-resolution security camera lens, dark industrial textures, night surveillance aesthetic"
-        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCs8EyLUTjSXEc18t-YJM01gySawsKtcVhIX9rUiJPlFw69aNJICNSEIPg2Y9mwAB0qxV5prZFCtagAlifXjjvr11Gsj5UkBnYNB021siwdP8Y2hkqUb1UgTNNup2WhaGBSH832F9PScpeGGUwxdoAyr5hAtsPMq82yhwNO3hdtBc6Sjh3Ybebk-LdyDpSApyFkiFSMbgHK6usdTbIDrHmEdpytLBgt2I0Eyj6ASwXMR1olXqYI7aQ-ulMXIqDQITgJL5du0FfreV4" />
-    </div>
 
-    <div class="scanline-overlay absolute inset-0 z-10"></div>
-   
+  <!-- MAIN -->
+  <main id="hello"
+    class="relative h-screen w-screen flex flex-col items-center justify-start pt-24 px-4 bg-[#F8FAFC]">
+
+    <!-- STATUS CARD -->
     <div
-      class="absolute inset-0 z-20 border-[5px] border-[#00FF41] shadow-[inset_0px_0px_20px_#00FF41] pointer-events-none">
+      class="w-full max-w-md bg-white border border-gray-200 p-5 text-center rounded-2xl shadow-sm">
+      <h2 class="text-[#0F172A] text-lg font-semibold tracking-wide">
+        Ready to Assist
+      </h2>
+      <p class="text-gray-500 text-sm mt-2">
+        Tap anywhere and speak your command
+      </p>
     </div>
 
-    <button
-      class="relative z-30 w-full h-full flex flex-col items-center justify-center cursor-pointer group active:scale-95 active:brightness-150 transition-all duration-100 outline-none focus:ring-0">
-     
-      <div class="text-center px-8 py-12 bg-black/40 backdrop-blur-sm border-[2px] border-[#00FF41]/30">
-        <h2
-          class="font-['Space_Grotesk'] font-black uppercase text-headline-lg text-[#00FF41] tracking-tighter pulse-glow">
-          &gt; INITIALIZE SYSTEM [TAP ANYWHERE]
-        </h2>
-        <div class="mt-stack-gap flex flex-col gap-4">
-          <p class="font-label-lg text-label-lg text-[#00FF41] opacity-80">
-            SENSORS: STANDBY...
-          </p>
-          <div class="flex gap-2 justify-center">
-            <span class="w-16 h-2 bg-[#00FF41]"></span>
-            <span class="w-16 h-2 bg-[#00FF41]/20"></span>
-            <span class="w-16 h-2 bg-[#00FF41]/20"></span>
-          </div>
-        </div>
-      </div>
-      <!-- VIEW_FINDER BLOCK -->
-<div id="viewfinder" class="absolute bottom-[25px] w-[325px] h-[180px] flex items-center justify-center border-[2px] border-[#00FF41] bg-black overflow-hidden z-10">
-  <div id="viewfinder-idle" class="flex items-center gap-4 text-[#00FF41] font-bold">
-    <span class="material-symbols-outlined animate-pulse">center_focus_weak</span>
-    <span>OPTICS STANDBY</span>
-  </div>
-  <!-- Laptop camera feed -->
-  <video id="webcam" class="hidden w-full h-full object-cover night-vision-filter" autoplay muted playsinline></video>
-  <!-- Sensing layer for boxes -->
-  <canvas id="overlay" class="absolute inset-0 pointer-events-none"></canvas>
-</div>
+    <!-- CAMERA VIEW -->
+    <div
+      class="relative w-full max-w-md aspect-video mt-6 border border-gray-200 bg-black rounded-2xl overflow-hidden shadow-md">
 
-      
-      <div
-        class="absolute bottom-[130px] flex items-center gap-4 py-4 px-8 border-[2px] border-[#00FF41] bg-black text-[#00FF41] font-['Space_Grotesk'] font-bold">
-        <span class="material-symbols-outlined" data-icon="center_focus_weak">center_focus_weak</span>
-        <span>AWAITING INPUT COMMAND</span>
+      <video id="webcam"
+        class="hidden w-full h-full object-cover"
+        autoplay muted playsinline></video>
+
+      <canvas id="overlay"
+        class="absolute inset-0 pointer-events-none"></canvas>
+
+      <div id="viewfinder-idle"
+        class="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
+        <span class="text-lg font-medium">Camera Off</span>
+        <span class="text-sm">Tap to activate</span>
       </div>
-    </button>
+    </div>
+
+  
+    
+    <button class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50"></button>
+
   </main>
-  <script>
+</body>
+
+<script>
 const entryNote = document.querySelector('#hello');
 const statusTitle = document.querySelector('h2');
 const statusSubtext = document.querySelector('p');
-
-const liveRegion = document.createElement('div');
-liveRegion.setAttribute('aria-live', 'assertive');
-liveRegion.classList.add('sr-only');
-document.body.appendChild(liveRegion);
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 recognition.lang = 'en-US';
 recognition.continuous = true;
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let model = null;
+let modelPromise = cocoSsd.load();
 
-function playBeep(freq, duration) {
-  const osc = audioCtx.createOscillator();
-  const gain = audioCtx.createGain();
-  osc.connect(gain);
-  gain.connect(audioCtx.destination);
-  osc.frequency.value = freq;
-  osc.start();
-  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-  osc.stop(audioCtx.currentTime + duration);
-}
+let cameraOn = false;
+let targetObject = null;
+let navigating = false;
+let currentDirection = null;
+let currentSize = 0;
+let lastSpoken = 0;
+
+const objectMap = {
+  slipper: "shoe",
+  shoes: "shoe",
+  sandal: "shoe",
+  bottle: "bottle",
+  cup: "cup",
+  mug: "cup",
+  phone: "cell phone",
+  mobile: "cell phone",
+  bag: "handbag",
+  backpack: "backpack",
+  chair: "chair",
+  table: "dining table"
+};
 
 function speak(text) {
   const msg = new SpeechSynthesisUtterance(text);
-
-  msg.onstart = () => {
-    statusTitle.innerText = "> TRANSMITTING...";
-    liveRegion.innerText = text;
-  };
+  window.speechSynthesis.cancel();
 
   msg.onend = () => {
-    statusTitle.innerText = "> LISTENING...";
-    playBeep(220, 0.1);
-    if (!waitingForPermission) recognition.start();
+    recognition.start();
   };
 
   window.speechSynthesis.speak(msg);
 }
 
-entryNote.addEventListener('click', async () => {
-  if (audioCtx.state === 'suspended') await audioCtx.resume();
-
-  if (waitingForPermission) {
-    waitingForPermission = false;
-
-    statusTitle.innerText = "> ACCESS GRANTED";
-    statusSubtext.innerText = "STARTING CAMERA...";
-
-    await startSensingVision();
-    speak("Vision system active.");
-  } else {
-    speak("Terminal active. Waiting for your command.");
-  }
-});
-
-async function getAIResponse(text) {
-  statusTitle.innerText = "> PROCESSING SIGNAL...";
+async function getAIResponse(prompt) {
   try {
     const res = await fetch('/api/ai', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text })
+      body: JSON.stringify({ prompt })
     });
 
     const data = await res.json();
+    return data.answer || "Move forward";
 
-    statusTitle.innerText = "> RESPONSE RECEIVED";
-    statusSubtext.innerText = data.answer;
-
-    speak(data.answer);
-  } catch (err) {
-    statusTitle.innerText = "> ERROR: SIGNAL LOST";
-    console.error(err);
+  } catch {
+    return "Move forward";
   }
 }
 
-let waitingForPermission = false;
-let model = null;
+entryNote.addEventListener('click', () => {
+  recognition.start();
+  speak("System active. Say find item.");
+});
 
 recognition.onresult = async (event) => {
-  const transcript = event.results[event.results.length - 1][0].transcript.toLowerCase().trim();
+  const text = event.results[event.results.length - 1][0].transcript.toLowerCase().trim();
+  statusSubtext.innerText = text;
 
-  statusSubtext.innerText = `LAST COMMAND: ${transcript.toUpperCase()}`;
-
-  if (transcript.includes("find item") || transcript.includes("find an item")) {
-    waitingForPermission = true;
-
-    recognition.stop();
-
-    statusTitle.innerText = "> AUTH REQUIRED";
-    statusSubtext.innerText = "ACTION: CLICK SCREEN TO ENABLE CAMERA";
-
-    speak("Authorization required. Click the screen to enable camera.");
+  if (text.includes("find item")) {
+    await startCamera();
+    speak("Camera started. Say object name.");
     return;
   }
 
-  if (transcript.includes("hello")) {
-    speak("Hello. All systems are operational.");
+  if (text.includes("find")) {
+    let item = text.replace("find", "").trim();
+    targetObject = item;
+    navigating = false;
+    speak("Rotate camera to find " + targetObject);
     return;
   }
 
-  if (transcript.includes("status")) {
-    speak("System status: Fully operational.");
+  if (text.includes("start")) {
+    navigating = true;
+    speak("Navigation started. Tap for next step.");
     return;
   }
 
-  if (!waitingForPermission) {
-    await getAIResponse(transcript);
+  if (text.includes("what is in front")) {
+    describeSceneAI();
+    return;
   }
 };
 
-async function startSensingVision() {
+async function startCamera() {
   const video = document.getElementById('webcam');
   const canvas = document.getElementById('overlay');
   const ctx = canvas.getContext('2d');
 
-  try {
-    if (!model) model = await cocoSsd.load();
+  if (!model) model = await modelPromise;
 
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    video.srcObject = stream;
-    video.classList.remove('hidden');
-    document.getElementById('viewfinder-idle').classList.add('hidden');
+  const stream = await navigator.mediaDevices.getUserMedia({
+    video: {
+      facingMode: "environment",
+      width: { ideal: 640 },
+      height: { ideal: 480 }
+    }
+  });
 
-    video.onloadedmetadata = () => {
-      canvas.width = video.clientWidth;
-      canvas.height = video.clientHeight;
+  video.srcObject = stream;
+  video.classList.remove('hidden');
+  document.getElementById('viewfinder-idle').classList.add('hidden');
 
-      const detect = async () => {
-        const predictions = await model.detect(video);
+  cameraOn = true;
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+  video.onloadedmetadata = () => {
+    canvas.width = video.clientWidth;
+    canvas.height = video.clientHeight;
+    detect();
+  };
 
-        predictions.forEach(p => {
-          ctx.strokeStyle = "#00FF41";
-          ctx.lineWidth = 2;
-          ctx.strokeRect(...p.bbox);
+  async function detect() {
+    const predictions = await model.detect(video);
 
-          ctx.fillStyle = "#00FF41";
-          ctx.font = "12px Space Grotesk";
-          ctx.fillText(p.class, p.bbox[0], p.bbox[1] - 5);
-        });
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        requestAnimationFrame(detect);
-      };
+    let found = false;
 
-      detect();
-    };
-  } catch (err) {
-    console.error(err);
-    speak("Camera access failed.");
+    predictions.forEach(p => {
+      ctx.strokeStyle = "#2563EB";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(...p.bbox);
+
+      ctx.fillStyle = "#2563EB";
+      ctx.font = "12px sans-serif";
+      ctx.fillText(p.class, p.bbox[0], p.bbox[1] - 5);
+
+      if (targetObject) {
+        let search = objectMap[targetObject] || targetObject;
+        search = search.replace(/s$/, "");
+
+        if (p.class.includes(search) || search.includes(p.class)) {
+          found = true;
+
+          const centerX = canvas.width / 2;
+          const objCenter = p.bbox[0] + p.bbox[2] / 2;
+
+          if (objCenter < centerX - 50) currentDirection = "right";
+          else if (objCenter > centerX + 50) currentDirection = "left";
+          else currentDirection = "center";
+
+          currentSize = p.bbox[2] * p.bbox[3];
+        }
+      }
+    });
+
+    if (targetObject && !found && Date.now() - lastSpoken > 4000) {
+      speak("Still searching. Rotate slowly.");
+      lastSpoken = Date.now();
+    }
+
+    setTimeout(detect, 120);
   }
+}
+
+entryNote.addEventListener('dblclick', async () => {
+  if (navigating) {
+    await giveStep();
+  }
+});
+
+async function giveStep() {
+  if (!currentDirection) {
+    speak("Rotate slowly");
+    return;
+  }
+
+  if (currentSize > 80000) {
+    speak("Destination reached");
+    navigating = false;
+    targetObject = null;
+    return;
+  }
+
+  const aiText = await getAIResponse(
+    `Direction: ${currentDirection}, Size: ${currentSize}. Give short navigation instruction.`
+  );
+
+  speak(aiText);
+}
+
+async function describeSceneAI() {
+  const video = document.getElementById('webcam');
+  if (!model || !video.srcObject) {
+    speak("Camera not active");
+    return;
+  }
+
+  const predictions = await model.detect(video);
+
+  if (!predictions.length) {
+    speak("I cannot see anything clearly");
+    return;
+  }
+
+  const objects = predictions.map(p => p.class);
+
+  const res = await getAIResponse(
+    `Objects detected: ${objects.join(", ")}. Describe simply for a blind person.`
+  );
+
+  speak(res);
 }
 </script>
 
-  
-    
-  </body>
-  </html>
+
+
+
+</body>
+
+</html>
